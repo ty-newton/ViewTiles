@@ -42,6 +42,53 @@ struct Triangle: Shape {
     }
 }
 
+enum Quadrant {
+    case topLeft
+    case topRight
+    case bottomLeft
+    case bottomRight
+    
+    static func Inverse(quadrant: Quadrant) -> Quadrant {
+        switch quadrant {
+        case .topLeft: return Quadrant.bottomRight
+        case .topRight: return Quadrant.bottomLeft
+        case .bottomLeft: return Quadrant.topRight
+        case .bottomRight: return Quadrant.topLeft
+        }
+    }
+}
+
+struct RightAngleTriangle: Shape {
+    var quadrant: Quadrant = .topLeft
+    
+    func path(in rect: CGRect) -> Path {
+        var path: Path = Path()
+        switch quadrant {
+        case .topLeft:
+            path.move(to: CGPoint(x: rect.minX, y: rect.minY)) // top left
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY)) // top right
+            path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY)) // bottom left
+            path.closeSubpath()
+        case .topRight:
+            path.move(to: CGPoint(x: rect.minX, y: rect.minY)) // top left
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY)) // top right
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY)) // bottom right
+            path.closeSubpath()
+        case .bottomLeft:
+            path.move(to: CGPoint(x: rect.minX, y: rect.minY)) // top left
+            path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY)) // bottom left
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY)) // bottom right
+            path.closeSubpath()
+        case .bottomRight:
+            path.move(to: CGPoint(x: rect.minX, y: rect.maxY)) // bottom left
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY)) // bottom right
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY)) // top right
+            path.closeSubpath()
+        }
+        return path
+    }
+}
+
 // https://www.hackingwithswift.com/quick-start/swiftui/how-to-draw-polygons-and-stars
 struct Star: Shape {
     // store how many corners the star has, and how smooth/pointed it is
@@ -91,13 +138,12 @@ struct Star: Shape {
 // MIDDLE
 // **********************************************************************************************************
 
-// defaults to light blue colour with orange outer colour
-// assumes the view dimensions are square
-// assumes the view is the correct dimensions
 struct Middle_CircleCircleCut: View, MiddleView {
     var colour: Color = Color.lightBlue
     var outerColour: Color = Color.orange
     
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.circle_circleCut ? true : false
     }
@@ -132,13 +178,12 @@ struct Middle_CircleCircleCut: View, MiddleView {
     }
 }
 
-// defaults to light blue colour with pink outer colour
-// assumes the view dimensions are square
-// assumes the view is the correct dimensions
 struct Middle_SquareCircleCut: View, MiddleView {
     var colour: Color = Color.lightBlue
     var outerColour: Color = Color.pink
 
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.square_circleCut ? true : false
     }
@@ -173,13 +218,12 @@ struct Middle_SquareCircleCut: View, MiddleView {
     }
 }
 
-// defaults to light blue colour with pink outer colour
-// assumes the view dimensions are square
-// assumes the view is the correct dimensions
 struct Middle_Octagon: View, MiddleView {
     var colour: Color = Color.darkBlue
     var outerColour: Color = Color.darkGreen
     
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.square_straightCut ? true : false
     }
@@ -197,6 +241,8 @@ struct Middle_Scallop: View, MiddleView {
     var outerColour: Color = Color.black // not used, kept to conform to MiddleView
     let scallopSize: CGFloat = 0.55 // % of the view edge length
 
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.scallop ? true : false
     }
@@ -235,6 +281,8 @@ struct Middle_CrossCirclePoint: View, MiddleView {
     let shaftWidth: CGFloat = 0.18 // % of the view edge length
     let shaftLength: CGFloat = 0.70 // % of the view edge length
 
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.cross_circlePoint ? true : false
     }
@@ -316,6 +364,8 @@ struct Middle_CrossPointyPoint: View, MiddleView {
     var outerColour: Color = Color.purple
     let rectSize: CGFloat = 0.85 // % of the view edge length
     
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.cross_pointyPoint ? true : false
     }
@@ -341,6 +391,8 @@ struct Middle_CircleCircleCorner: View, MiddleView {
     let cornerSize: CGFloat = 0.35 // % of the view edge length
     let centerSize: CGFloat = 0.9 // % of the view edge length
 
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.circle_circleCorner ? true : false
     }
@@ -381,6 +433,8 @@ struct Middle_Circle: View, MiddleView {
     var colour: Color = Color.yellow
     var outerColour: Color = Color.black // not used, kept to conform to MiddleView
     
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.circle ? true : false
     }
@@ -399,6 +453,8 @@ struct Middle_SquareSquareCorner: View, MiddleView {
     let cornerSize: CGFloat = 0.30 // % of the view edge length
     let centerSize: CGFloat = 0.8 // % of the view edge length
 
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.square_squareCorner ? true : false
     }
@@ -439,6 +495,8 @@ struct Middle_Square: View, MiddleView {
     var colour: Color = Color.darkGreen
     var outerColour: Color = Color.black // not used, kept to conform to MiddleView
     
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.square ? true : false
     }
@@ -456,6 +514,8 @@ struct Middle_Star6: View, MiddleView {
     var colour: Color = Color.lightBlue
     var outerColour: Color = Color.black // not used, kept to conform to MiddleView
     
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.star6 ? true : false
     }
@@ -476,6 +536,8 @@ struct Inner_Diamond: View {
     var colour: Color = Color.pink
     let diamondSize: CGFloat = 0.8 // % of the view edge length
     
+    // is this Inner matched with the input Pattern
+    // this is used to decide to draw this Inner
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.diamond ? true : false
     }
@@ -491,6 +553,8 @@ struct Inner_Circle: View {
     var colour: Color = Color.darkGreen
     let squareSize: CGFloat = 0.9 // % of the view edge length
     
+    // is this Inner matched with the input Pattern
+    // this is used to decide to draw this Inner
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.circle ? true : false
     }
@@ -507,6 +571,8 @@ struct Inner_Plus: View {
     let shaftLength: CGFloat = 1.5 // % of the view edge length
     let shaftWidth: CGFloat = 0.5 // % of the view edge length
     
+    // is this Inner matched with the input Pattern
+    // this is used to decide to draw this Inner
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.plus ? true : false
     }
@@ -530,6 +596,8 @@ struct Inner_Star4: View {
     var middleColour: Color = Color.orange
     let triangleHeight: CGFloat = 0.15 // % of the view edge length
     
+    // is this Inner matched with the input Pattern
+    // this is used to decide to draw this Inner
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.star4 ? true : false
     }
@@ -568,6 +636,8 @@ struct Inner_Star4: View {
 struct Inner_Square: View {
     var colour: Color = Color.yellow
     
+    // is this Inner matched with the input Pattern
+    // this is used to decide to draw this Inner
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.square ? true : false
     }
@@ -579,15 +649,13 @@ struct Inner_Square: View {
 }
 
 // **********************************************************************************************************
-// COMPOSITE
+// COMPOSITES AND CONTAINERS
 // **********************************************************************************************************
 
-// a rectangle with colour from pattern, and a 2 wide black border
 struct Outer: View {
     var borderWidth: CGFloat = 2
     var borderColour: Color = Color.black
     var pattern: Pattern
-
 
     var body: some View {
         ZStack {
@@ -602,13 +670,15 @@ struct Middle: View {
     var pattern: Pattern
     var outerColour: Color
 
+    // is this Middle matched with the input Pattern
+    // this is used to decide to draw this Middle
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.none ? false : true
     }
 
     var body: some View {
         ZStack {
-            Group { // max of 10 views allowed as children
+            Group { // max of 10 views allowed as children; so splitting this 10 out as a group
                 Middle_CircleCircleCut(colour: self.pattern.colour, outerColour: self.outerColour)
                     .isHidden(!Middle_CircleCircleCut.isMatched(self.pattern), remove: true)
                 Middle_SquareCircleCut(colour: self.pattern.colour, outerColour: self.outerColour)
@@ -642,6 +712,8 @@ struct Inner: View {
     var pattern: Pattern
     var outerColour: Color
 
+    // is this Inner matched with the input Pattern
+    // this is used to decide to draw this Inner
     static let isMatched: (Pattern) -> Bool = { pattern in
         return pattern.shape == PatternShape.none ? false : true
     }
@@ -663,10 +735,11 @@ struct Inner: View {
 }
 
 struct Quad: View {
-                                    // outser size is 100% of Quad's view size
+                                    // outer size is 100% of Quad's view size
     var middleSize: CGFloat = 0.8   // 80% percentage of Quad's view size
     var innerSize: CGFloat = 0.35   // 35% percentage of Quad's view size
     var side: Side
+    var quadrant: Quadrant          // the quadrant this quad is being drawn in
     
     var body: some View {
         GeometryReader { geometry in
@@ -678,7 +751,33 @@ struct Quad: View {
                 Inner(pattern: self.side.design.inner, outerColour: self.side.design.center.colour)
                     .frame(width: geometry.size.width * self.innerSize, height: geometry.size.height * self.innerSize)
                     .isHidden(!Inner.isMatched(self.side.design.inner), remove: true)
-            }.clipped()
+            }
+            .clipShape( RightAngleTriangle(quadrant: Quadrant.Inverse(quadrant: self.quadrant)) )
+        }
+    }
+}
+
+// parent view must have the same width and height
+// all the child views assume the encapsulating frame is a square
+struct _Tile: View {
+    var piece: RotatingSquare
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Quad(side: self.piece.square.top, quadrant: .topLeft)   // top left
+                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
+                    .position(x: geometry.size.width / 4, y: geometry.size.height / 4)
+                Quad(side: self.piece.square.right, quadrant: .topRight)    // top right
+                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
+                    .position(x: geometry.size.width / 4 * 3, y: geometry.size.height / 4)
+                Quad(side: self.piece.square.bottom, quadrant: .bottomRight)    // bottom right
+                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
+                    .position(x: geometry.size.width / 4 * 3, y: geometry.size.height / 4 * 3)
+                Quad(side: self.piece.square.left, quadrant: .bottomLeft)   // bottom left
+                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
+                    .position(x: geometry.size.width / 4, y: geometry.size.height / 4 * 3)
+            }
         }
     }
 }
@@ -688,24 +787,11 @@ struct Tile: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                // top left
-                Quad(side: self.piece.square.top)
-                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
-                    .position(x: geometry.size.width / 4, y: geometry.size.height / 4)
-                // top right
-                Quad(side: self.piece.square.right)
-                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
-                    .position(x: geometry.size.width / 4 * 3, y: geometry.size.height / 4)
-                // bottom left
-                Quad(side: self.piece.square.left)
-                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
-                    .position(x: geometry.size.width / 4, y: geometry.size.height / 4 * 3)
-                // bottom right
-                Quad(side: self.piece.square.bottom)
-                    .frame(width: geometry.size.width / 2, height: geometry.size.height / 2)
-                    .position(x: geometry.size.width / 4 * 3, y: geometry.size.height / 4 * 3)
-            }
+            // ensure the tile is a square in the center of its parent view
+            _Tile(piece: self.piece)
+                .frame(width: min(geometry.size.width, geometry.size.height), height: min(geometry.size.width, geometry.size.height))
+                .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                .rotationEffect(.degrees(45))
         }
     }
 }
@@ -714,55 +800,42 @@ struct ListRow: View {
     var tile: RotatingSquare
     
     var body: some View {
-        GeometryReader { geometry in
-            HStack {
-                Text("\(String(self.tile.square.identifier))")
-                    .bold()
-                    .font(Font.largeTitle)
-                    .padding()
-                Tile(piece: self.tile)
-                    .frame(width: min(geometry.size.width, geometry.size.height), height: min(geometry.size.width, geometry.size.height))
-                    .clipShape(Diamond())
-                    .rotationEffect(.degrees(45))
-            }
+        HStack {
+            Text("\(String(self.tile.square.identifier))")
+                .bold()
+                .font(Font.headline)
+                .padding()
+                .frame(minWidth: 50)
+            Tile(piece: self.tile)
+                .frame(minHeight: 50)
         }
     }
 }
 
 struct ListView: View {
     var body: some View {
-        GeometryReader { geometry in
-            List {
-                ForEach(0..<Tiles.count) {
-                    ListRow(tile: Tiles[$0])
-                        .frame(minWidth: 400, maxWidth: .infinity, minHeight: 300)
-                }
-            }
-        }
+        List { ForEach(0 ..< Tiles.count) { ListRow(tile: Tiles[$0]) } }
     }
 }
 
 struct ContentView: View {
     var body: some View {
-        //Text("Hello, World 4!").frame(maxWidth: .infinity, maxHeight: .infinity)
-        //Inner_Plus(colour: Tiles[6].square.top.design.inner.colour).frame(width: 400, height: 400)
-        //Middle_CircleCircleCut(colour: Tiles[0].square.top.design.center.colour, outerColour: Tiles[0].square.top.design.outer.colour).frame(width: 400, height: 400)
-        //Middle_CrossCirclePoint(colour: Tiles[4].square.top.design.center.colour, outerColour: Tiles[0].square.top.design.outer.colour).frame(width: 400, height: 400)
-        //Middle_CrossPointyPoint(colour: Tiles[5].square.top.design.center.colour, outerColour: Tiles[5].square.top.design.outer.colour).frame(width: 400, height: 400)
-        //Middle_CircleCircleCorner(colour: Tiles[7].square.right.design.center.colour, outerColour: Tiles[7].square.right.design.outer.colour).frame(width: 400, height: 400)
-        //Middle(pattern: Tiles[0].square.top.design.center, outerColour: Tiles[0].square.top.design.outer.colour).frame(width: 400, height: 400)
-        //Quad(side: Tiles[7].square.right).frame(width: 400, height: 400)
-        //Quad(side: Tiles[0].square.top).frame(width: 400, height: 400)
-        //Tile(piece: Tiles[0]).frame(width: 400, height: 400)
-        //ListRow(tile: Tiles[0]).frame(width: 600, height: 400)
+        //ListView().frame(maxWidth: .infinity, maxHeight: .infinity)
         
-        ListView().frame(maxWidth: .infinity, maxHeight: .infinity)
+        FlowStack(columns: 5, numItems: 60, alignment: .leading) { index, colWidth in
+          ListRow(tile: Tiles[index])
+            .padding(5)
+            .frame(width: colWidth, height: colWidth)
+        }.padding(5)
     }
 }
 
+#if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().frame(width: 800, height: 1200)
+        ContentView()
+            .frame(minWidth: 600, maxWidth: .infinity, minHeight: 800, maxHeight: .infinity)
     }
 }
+#endif
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1052209A24CEF0EB00BE2B37 /* FlowStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1052209924CEF0EB00BE2B37 /* FlowStack.swift */; };
 		10BBC9CC24CD5E7F007382E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BBC9CB24CD5E7F007382E9 /* AppDelegate.swift */; };
 		10BBC9CE24CD5E7F007382E9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BBC9CD24CD5E7F007382E9 /* ContentView.swift */; };
 		10BBC9D024CD5E82007382E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10BBC9CF24CD5E82007382E9 /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1052209924CEF0EB00BE2B37 /* FlowStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowStack.swift; sourceTree = "<group>"; };
 		10BBC9C824CD5E7F007382E9 /* ViewTiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewTiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10BBC9CB24CD5E7F007382E9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10BBC9CD24CD5E7F007382E9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -42,6 +44,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1052209824CEF0CA00BE2B37 /* FlowStack */ = {
+			isa = PBXGroup;
+			children = (
+				1052209924CEF0EB00BE2B37 /* FlowStack.swift */,
+			);
+			path = FlowStack;
+			sourceTree = "<group>";
+		};
 		10BBC9BF24CD5E7F007382E9 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +71,7 @@
 		10BBC9CA24CD5E7F007382E9 /* ViewTiles */ = {
 			isa = PBXGroup;
 			children = (
+				1052209824CEF0CA00BE2B37 /* FlowStack */,
 				10BBC9DE24CD67F3007382E9 /* Color.swift */,
 				10BBC9E024CD67F3007382E9 /* Tiles.swift */,
 				10BBC9DF24CD67F3007382E9 /* View.swift */,
@@ -154,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1052209A24CEF0EB00BE2B37 /* FlowStack.swift in Sources */,
 				10BBC9E224CD67F3007382E9 /* View.swift in Sources */,
 				10BBC9E324CD67F3007382E9 /* Tiles.swift in Sources */,
 				10BBC9CE24CD5E7F007382E9 /* ContentView.swift in Sources */,
